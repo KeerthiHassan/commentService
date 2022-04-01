@@ -51,6 +51,12 @@ GetMapping("/{postId}/comments")
         log.info("Updating comment" );
         return new ResponseEntity<CommentResponse>(commentService.updateComment(postId,commentId,updateComments),HttpStatus.OK);
     }
+	
+	@DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deletePost(@PathVariable ("postId") String postId,@PathVariable("commentId") String commentId){
+        log.info("Deleting comment");
+        return new ResponseEntity<String>(commentService.deleteComment(postId,commentId),HttpStatus.OK);
+    }
     
     
 }
