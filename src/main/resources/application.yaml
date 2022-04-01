@@ -1,0 +1,31 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://host.docker.internal:8761/eureka}
+  instance:
+    preferIpAddress: true
+    hostname: host.docker.internal
+spring:
+  application:
+    name: comment-service
+  cloud:
+    discovery:
+      enabled: true
+  data:
+    mongodb:
+      database: user_db
+      port: 27017
+      host: host.docker.internal
+server:
+  port: 3015
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+feign:
+  circuitBreaker:
+    enable: true
+logging:
+  file:
+    name: D:/Maveric/comment-service/logs/commentlog.log
