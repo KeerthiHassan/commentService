@@ -38,7 +38,41 @@ public class CommentServiceImplementation implements CommentService{
 @LoadBalanced
 
     
-
+ @Override
+    public List<CommentResponse> getComments(String postId) {
+   
+    List<Comment> commentList=commentRepo.findBypostId(postId);
+        if(commentList==null) {
+            log.info("comments not found");
+            throw new CommentNotFound("No comment for postId: " + postId);
+        }
+        List<CommentResponse> commentResponses=new ArrayList<>();
+        log.info("Total comments with this post are "+commentList.size());
+        for(Comment comment:commentList)
+        {
+            log.info("Comments"+setCommentResponse(comment));
+             commentResponses.add(setCommentResponse(comment));
+        }
+        log.info("comments found successfully");
+        return commentResponses;
+    }
+	
+	 @Override
+    public Integer getCommentsCount(String postId) {
+        return commentRepo.findBypostId(postId).size();
+    }
+	
+	@Override
+    public CommentResponse getCommentDetails(String postId,String commentId) {
+        Comment comment=commentRepo.findBycommentId(commentId);
+        if(comment==null){
+            log.info("comment details not found");
+            throw new CommentNotFound("Comment not found with Id "+commentId);
+        }
+        log.info("Comment details found");
+        return setCommentResponse(comment);
+    }
+	
     @Override
     public CommentResponse createComment(String postId,Commentdto commentdto) {
         Comment comments=new Comment();
