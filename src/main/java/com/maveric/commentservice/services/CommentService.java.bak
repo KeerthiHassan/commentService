@@ -7,5 +7,5 @@ import com.maveric.commentservice.model.Comment;
 import java.util.List;
 
 public interface CommentService {
-    
+    CommentResponse createComment(String postId,Commentdto commentdto);
 }
