@@ -70,6 +70,22 @@ public class CommentServiceImplementation implements CommentService{
         log.info("Updating comment in repo");
         return setCommentResponse(commentRepo.save(comment));
     }
+	
+	@Override
+    public String deleteComment(String postId,String commentId) {
+Comment comment=commentRepo.findBycommentId(commentId);
+        if(comment==null){
+            log.info("comment not found");
+        throw new CommentNotFound("Comment Doesn't Exists");
+        }
+       else if(!comment.getPostId().equals(postId)) {
+            log.info("Comment does not match with post");
+            throw new CommentNotBelongs("Comment does not match with this post try again");
+        }
+         commentRepo.deleteById(commentId);
+       log.info("comment deleted");
+        return "Comment deleted successfully";
+    }
 
     
     

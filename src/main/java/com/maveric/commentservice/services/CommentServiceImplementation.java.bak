@@ -52,6 +52,24 @@ public class CommentServiceImplementation implements CommentService{
         return new CommentResponse(comment.getCommentId(),userFeign.getUsersById(comment.getCommentedBy()).getBody(),
                 comment.getComment(),comment.getCreatedAt(),comment.getUpdatedAt(),0);
     }
+	@Override
+    public CommentResponse updateComment(String postId,String commentId, Commentdto updateComments) {
+        Comment comment=commentRepo.findBycommentId(commentId);
+        if(comment==null){
+            log.info("comment not found");
+            throw new CommentNotFound("can't find comment on the post ,comment not found");
+        }
+        else if(comment.getCommentedBy().equals(updateComments.getCommentedBy())){
+            log.info("Comment is not created by you");
+            throw new CommentNotBelongs("Can't updated,Comment doesn't belongs to you");
+        }
+        comment.setComment(updateComments.getComment());
+        comment.setCommentedBy(updateComments.getCommentedBy());
+        comment.setUpdatedAt(LocalDate.now());
+        comment.setPostId(postId);
+        log.info("Updating comment in repo");
+        return setCommentResponse(commentRepo.save(comment));
+    }
 
     
     
