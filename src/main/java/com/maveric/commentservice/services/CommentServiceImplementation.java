@@ -39,9 +39,9 @@ public class CommentServiceImplementation implements CommentService{
 
     
  @Override
-    public List<CommentResponse> getComments(String postId) {
-   
-    List<Comment> commentList=commentRepo.findBypostId(postId);
+    public List<CommentResponse> getComments(String postId,Integer page, Integer size) {
+   Pageable pageable= PageRequest.of(page,size);
+    List<Comment> commentList=commentRepo.findBypostId(postId,pageable);
         if(commentList==null) {
             log.info("comments not found");
             throw new CommentNotFound("No comment for postId: " + postId);

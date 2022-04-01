@@ -23,10 +23,11 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-GetMapping("/{postId}/comments")
-    public ResponseEntity<List<CommentResponse>>  getComments(@PathVariable ("postId") String postId){
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<CommentResponse>>  getComments(@PathVariable ("postId") String postId, @QueryParam("page") Integer page, @QueryParam("size") Integer size){
         log.info("getting all comments");
-        return new ResponseEntity<List<CommentResponse>>(commentService.getComments(postId), HttpStatus.OK);
+        return new ResponseEntity<List<CommentResponse>>(commentService.getComments(postId,page,size), HttpStatus.OK);
     }
     
 	@GetMapping("/{postId}/comments/count")

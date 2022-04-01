@@ -23,9 +23,6 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-
-    
-
 GetMapping("/{postId}/comments")
     public ResponseEntity<List<CommentResponse>>  getComments(@PathVariable ("postId") String postId){
         log.info("getting all comments");
@@ -37,7 +34,12 @@ GetMapping("/{postId}/comments")
         log.info("getting comment count");
         return new ResponseEntity<Integer>(commentService.getCommentsCount(postId), HttpStatus.OK);
     }
-
+	
+	@GetMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentResponse>  getCommentDetails(@PathVariable ("postId") String postId,@PathVariable("commentId") String commentId){
+        log.info("getting comment details");
+        return new ResponseEntity<CommentResponse>(commentService.getCommentDetails(postId,commentId), HttpStatus.OK);
+    }
     @PostMapping("/{postId}/comments")
     public ResponseEntity<CommentResponse> createComment(@PathVariable ("postId") String postId,@Valid  @RequestBody Commentdto commentdto){
         log.info("creating  new comment for the post");
@@ -48,6 +50,12 @@ GetMapping("/{postId}/comments")
     public ResponseEntity<CommentResponse> updateComment(@PathVariable ("postId") String postId,@PathVariable("commentId") String commentId,@Valid @RequestBody Commentdto updateComments){
         log.info("Updating comment" );
         return new ResponseEntity<CommentResponse>(commentService.updateComment(postId,commentId,updateComments),HttpStatus.OK);
+    }
+	
+	@DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deletePost(@PathVariable ("postId") String postId,@PathVariable("commentId") String commentId){
+        log.info("Deleting comment");
+        return new ResponseEntity<String>(commentService.deleteComment(postId,commentId),HttpStatus.OK);
     }
     
     
